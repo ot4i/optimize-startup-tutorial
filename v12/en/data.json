@@ -221,7 +221,11 @@
 										 {
 										"details":"Open an IBM App Connect Enterprise command console and execute the following command, using the file system location of your Toolkit workspace in place of &lt;Your Toolkit Workspace Location&gt;<br><code>ibmint optimize server --work-directory &lt;Your Toolkit Workspace Location&gt;\\TEST_SERVER --verbose</code><br><br>The response should look like this:<br><br><code>BIP15243I: Analyzing server configuration.<br>BIP15257I: The component 'NodeJS' is required for YAML configuration setting 'RestAdminListener/port' with value '7600'.<br>BIP15244I: Analyzing application 'ExampleApplication'.<br>BIP15250I: Analyzing message flow 'ExampleFlow'.<br>BIP15251I: Analyzing message flow node 'HTTP Input'.<br>BIP15251I: Analyzing message flow node 'HTTP Reply'.<br>BIP15251I: Analyzing message flow node 'Compute'.<br>BIP15254I: The component 'Nodes/ESQL' is required for message flow node 'Compute' of type 'ComIbmCompute'.<br>BIP15255I: The component 'Nodes/ESQL' is required for deployed resource 'ExampleFlow_Compute.esql'.<br>BIP15237I: The components file '&lt;Your Toolkit Workspace Location&gt;\\TEST_SERVER\\server.components.yaml' was created. It may be further edited if required.<br>BIP8071I: Successful command completion.</code><br>"
 										 }
-                    ]
+                    					]
+								}
+							}
+				]
+				
                 },
                 "helpLinks": 
 				{
