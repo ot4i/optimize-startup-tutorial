@@ -62,16 +62,17 @@
                     "title": "Speed up the start time for an independent integration server running in a container, by determining functions of the server which are not required using the ibmint optimize command."
                 }
             ],
-            "summary": 
+
+			
+			            "summary": 
 			{
                 "overviewName": "OVERVIEW",
-                "_overviewComment": "A short description of what happens in this tutorial, and an optional short explanation of the ACE concepts used in this tutorial if necessary for context. What background knowledge must the user have for this to make sense?",
+                "_overviewComment": "This tutorial demonstrates how to implement a shared variable in-memory cache in a message flow. It shows using a Compute node to replace an abbreviated value in a message with an associated full name from a Lookup table that is cached in memory. Another Compute node shows how to load the Lookup table based upon CSV content stored in a local file.",
                 "sections": 
 				[
-                    						
-						{
-                       "section":"This tutorial demonstrates how the ibmint command can be used to optimize the startup time for an independent integration server. The purpose of optimization is to speed up server startup in cloud container environments. The techniques discussed only apply to independent integration servers and are not suitable for integration servers that are managed by an integration node. Server optimization is suitable when the server content is fixed and it is desireable to reduce the startup time of the process to be as short as possible.	The tutorial provides a simple example message flow which will be deployed and tested using a local independent integration server created in the Toolkit. The tutorial then switches to a Command Console where several ibmint commands server will be used to demonstrate the process of optimizing startup.",
-						  "steps":
+                    {
+                        "section": "This tutorial demonstrates how the ibmint command can be used to optimize the startup time for an independent integration server. The purpose of optimization is to speed up server startup in cloud container environments. The techniques discussed only apply to independent integration servers and are not suitable for integration servers that are managed by an integration node. Server optimization is suitable when the server content is fixed and it is desireable to reduce the startup time of the process to be as short as possible. The tutorial provides a simple example message flow which will be deployed and tested using a local independent integration server created in the Toolkit. The tutorial then switches to a Command Console where several ibmint commands server will be used to demonstrate the process of optimizing startup.",
+						 "steps":
                         {
                           "type": "ordered",
                           "details":
@@ -89,7 +90,7 @@
 						}
 					}
                 ]
-            },
+            },			
 			"helpLinks": 
 			{
 				"_helpLinksComment": "Helplinks that have a type:web attribute are rendered as web links. Otherwise, links are assumed to be to embedded Help topics in the Knowledge Center.",
