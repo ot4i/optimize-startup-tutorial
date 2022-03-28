@@ -259,11 +259,11 @@
                     "details": 
 					[
                         {
-                            "title": "IBM Documentation link to ",
-                            "description": "FileExists node",
-                            "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=nodes-fileexists-node",
-							"type": "web"
-                        },
+						"title": "IBM Documentation link to ",
+						"description": "Optimizing the startup time for an independent integration server",
+                        "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=solutions-optimizing-startup-time-independent-integration-server",
+						"type": "web"
+						},
                         {
                             "title": "IBM Documentation link to ",
                             "description": "Testing your message flow by using the Flow exerciser",
