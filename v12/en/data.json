@@ -1,0 +1,322 @@
+{
+    "version": "0.1",
+    "pageContent": 
+	{
+        "_comments": "object that contains data for page labels, buttons, etc.",
+        "navItems": 
+		{
+            "_common": 
+			{
+                "buttonBackToGallery": 
+				{
+                    "name": "Back To Gallery",
+					"method": "backToGallery()",
+					"idName": "backToGallery"	
+                },
+                "buttonStartTutorial": 
+				{
+                    "name": "Start Tutorial",
+					"method": "startTutorialFromDetailsScreen()",
+					"idName": "startTutorial"
+                },
+				"buttonViewDetails": 
+				{
+                    "name": "View Details",
+					"method": "viewDetails()",
+					"idName": "stepsViewDetails"	
+                }
+            }
+        }
+    },
+    "tutorial": 
+	{
+        "_common": 
+		{
+            "name": "Optimizing the startup time of an independent Integration Server",
+            "shortDescription": "Learn how to optimize the startup time of an independent integration server using the ibmint commandFileExists node to trigger a message flow (requires v12.0.4.0 or higher)",
+            "durationText": "This tutorial takes approximately",
+            "durationTime": "10 minutes",
+            "_resourceToOpenComment": "The ID of the first resource to open when the user imports the tutorial. Resource IDs are defined in the repo_metadata.json Tutorials listing on ot4i.",
+            "resourceToOpen": "MainFlow",
+            "helpLink": 
+			{
+                "text": "IBM Documentation",
+           		"link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/acesw_home.html"
+            }
+        },
+        "pageDetails": 
+		{
+            "topicsName": "Tutorial topics",
+            "_topicListComment": "A short list of product concepts or tasks demonstrated by this tutorial",
+            "topicList": 
+			[
+                {
+                    "title": "Command: ibmint optimize server"
+                }
+            ],
+            "outcomesName": "Learning outcomes",
+            "_outcomesComment": "A description of what the user will have learned or accomplished by running this tutorial.",
+            "outcomeList": 
+			[
+                {
+                    "title": "Speed up the start time for an independent integration server running in a container, by determining functions of the server which are not required using the ibmint optimize command."
+                }
+            ],
+            "summary": 
+			{
+                "overviewName": "OVERVIEW",
+                "_overviewComment": "A short description of what happens in this tutorial, and an optional short explanation of the ACE concepts used in this tutorial if necessary for context. What background knowledge must the user have for this to make sense?",
+                "sections": 
+				[
+                    						
+						{
+                       "section":"This tutorial demonstrates how the ibmint command can be used to optimize the startup time for an independent integration server. The purpose of optimization is to speed up server startup in cloud container environments. The techniques discussed only apply to independent integration servers and are not suitable for integration servers that are managed by an integration node. Server optimization is suitable when the server content is fixed and it is desireable to reduce the startup time of the process to be as short as possible.	The tutorial provides a simple example message flow which will be deployed and tested using a local independent integration server created in the Toolkit. The tutorial then switches to a Command Console where several ibmint commands server will be used to demonstrate the process of optimizing startup.",
+						  "steps":
+                        {
+                          "type": "ordered",
+                          "details":
+                          [
+                            {
+                                "details": "The first optimization stage demonstrates how the server itself can decide which components are unecessary (based upon the server's configuration and deployed content)"
+                            },
+							{
+                                "details": "The second optimization stage goes a step further and demonstrates the impact of not starting a JVM within the server process."
+                            },
+							{
+                                "details": "The third optimization stage turns off the server's use of NodeJS"
+                            }
+						  ]
+						}
+					}
+                ]
+            },
+			"helpLinks": 
+			{
+				"_helpLinksComment": "Helplinks that have a type:web attribute are rendered as web links. Otherwise, links are assumed to be to embedded Help topics in the Knowledge Center.",
+				"title": "Find out more",
+				"details": 
+				[
+					{
+						"title": "IBM Documentation link to ",
+						"description": "Developing integration solutions from scratch",
+						"link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/bi12002_.htm",
+						"type": "web"
+					}
+				]
+			}
+        },
+        "pageSteps": 
+		{
+            "create": 
+			{
+                "overview": 
+				{
+                    "name": "Create",
+                    "heading": "Import projects",
+                    "_createComment": "A description of what will happen when the user clicks Import.",
+                    "sections": 
+					[
+                        {
+                            "section": "When you click Import, one project will be created in your workspace: An application named <span class='application'>ApplicationFileExists</span>"
+                        },
+                        {
+                            "section": "<span class='application'>ApplicationFileExists</span> provides a single message flow named <span class='application'>FlowFileExists</span> which uses a FileExists node to poll a directory and triggers the message flow when it notices that a file has arrived. The file itself is not parsed, but information about the file is propagated through the flow. Downstream nodes use the time when the file was last modified to determine whether or not to update an in-memory cache. The following descriptions summarize the functionality of each message flow node:"							
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>HTTP Input</span>: An Input node that receives an input message across HTTP that contains a country code (an abbreviated country name)."
+                        },
+                        { 
+                        	"section":"<span class='uicontrol'>TranslateCountryCode</span>: A Compute node that uses an ESQL shared variable as an in-memory cache providing a Lookup facility to retrieve the full country name, by using the abbreviated country code as a key."
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>HTTP Reply</span>: A Reply node that returns a message across HTTP that contains the full country name, and to help you understand how the flow is operating, the time at which the cache was last updated."
+                        },
+                        { 
+                        	"section":"<span class='uicontrol'>FilExists</span>: A FileExists node that triggers the flow when it notices that a file has been written to a directory which it is polling on a 20 second interval."
+                        },
+                        { 
+                        	"section":"<span class='uicontrol'>Update Cache?</span>: A Filter node that compares the time when the file was last modified to the time when the in-memory cache was last updated, and depending on the comparison, routes the data in different directions."
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>CacheNotUpdated</span>: A Trace node that records the fact that the cache does not need updating in a trace file."
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>File Read</span>: A File Read node that reads the file and parses it using a DFDL message model, ready to populate the in-memory cache."
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>Update Cache</span>: A Compute node that updates the shared variable in-memory cache with the content from the file."
+                        },
+						{ 
+                        	"section":"<span class='uicontrol'>CacheUpdated</span>: A Trace node that records the fact that the cache has been updated in a trace file"
+                        },
+                        {
+			    			"section": "Once imported using the link on the right, the provided project is ready to be deployed and tested. The rest of these instructions will describe how to do this using the Toolkit's built-in Flow Exerciser."
+						}
+                    ]
+                },
+                "helpLinks": 
+				{
+                    "title": "Find out more",
+                    "details": 
+					[
+                        {
+                            "title": "IBM Documentation link to ",
+                            "description": "Developing integration solutions from scratch",
+                            "link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/bi12002_.htm",
+							"type": "web"
+                        },
+						{
+                            "title": "IBM Documentation link to ",
+                            "description": "FileExists node",
+                            "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=nodes-fileexists-node",
+							"type": "web"
+                        },
+                        {
+                             "title": "IBM Documentation link to ",
+                             "description": "Long-lived variable",
+                             "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=overview-long-lived-variables",
+                             "type": "web"
+                        }
+						
+                    ]
+                },
+                "actions": 
+				{
+                    "title": "Create Actions",
+                    "details": 
+					[
+                        {
+                            "name": "Import",
+                            "method": "importArtifacts()"
+                        }
+                    ]
+                }
+            },
+            "prepare": 
+			{
+                "overview": 
+				{
+                    "name": "Prepare",
+                    "heading": "The following steps help you to prepare your environment ready for running the message flow.",
+                    "_prepareComment": "A description of what just happened when the user clicked Import, and what will happen when the user clicks Deploy.",
+                    "sections": [
+				    {
+                       "section":"<b>Create an Integration Server</b>",
+						  "steps":
+                        {
+                          "type": "ordered",
+                          "details":
+                          [
+                            {
+                                "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values and click Finish. The local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog. "
+                            }
+						  ]
+						}
+					},
+					{
+                       "section":"<b>Create a temporary directory and configure the message flow's trace nodes</b>",
+						  "steps":
+                        {
+                          "type": "ordered",
+                          "details":
+                          [
+                             {
+                                 "details": "The message flow includes two trace nodes (named CacheUpdated and CacheNotUpdated) which are both currently configured to write a trace file named <code>C:\\temp\\TraceFileExists.txt</code>. Make sure this temporary directory exists, or update the message flow nodes' properties to point to a different file location."
+                                             }
+						  ]
+						}
+					},
+					{
+                       "section":"<b>Create the directory which the FileExists node will poll</b>",
+						  "steps":
+                        {
+                          "type": "ordered",
+                          "details":
+                          [
+                             {
+                                 "details": "On Windows: Create the directory <code>C:\\temp\\FileExistsDemo</code>."
+                                             },
+                                             {
+                                 "details": "On Linux: Create a suitable directory such as <code>/tmp/FileExistsDemo</code> and change the Input directory property of the FileExists node accordingly to point to the same directory."
+                                             }
+						  ]
+						}
+					},	
+					{
+                            "section": "Next you will use the Flow exerciser to send HTTP requests to the message flow."
+                    }
+             ]
+                },
+                "helpLinks": 
+				{
+                }
+            },
+            "run": 
+			{
+                "overview": 
+				{
+                    "name": "Run",
+                    "heading": "",
+                    "_runComment": "The full steps for the user to run through the tutorial. Use 'sections' to render paragraphs, 'steps' with a type of 'ordered' or 'unordered' to render HTML lists, and 'substeps' to render nested lists.",
+                "sections":[                            
+                            {
+                                "section": "<h4>Use the Flow Exerciser to test the tutorial scenario",
+                                "steps": {
+                                    "type": "ordered",
+                                    "details": [                                      
+                                    {
+                                        "details": "Open <span class='resource'>FileExistsFlow.msgflow</span> and click the Flow Exerciser icon <img src='http://ot4i.github.io/ot4i.tutorials//dist/images/icons/iib/startFlowExerciser.png' alt='' /> to start testing the flow (if you have already deployed the flow you will be asked whether you want to redeploy it which should only be necessary if you have subsequently changed the flow since it was last deployed)."
+                                        },
+										{
+                                            "details": "Click the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. One saved message is provided, named Input1, which can be used to invoke the HTTP Input node..."
+                                        },																				
+                                        {
+                                            "details": "The input message <span class='resource'>Input1</span> contains this data:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\"<br>}</code><br><br>Select this input message and click Send and your message is sent to the HTTPInput node. You will receive a JSON reply message structured like this:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryName\": \"Unknown\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CacheInfo\": \"Cache has not yet been initialised\"<br>}</code><br><br>After you close the dialog, the path taken through the message flow will be highlighted."
+										},
+										{										
+										  "details": "Copy the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. The file will be processed by the message flow to update its cache and will then be deleted. This may take a few seconds as the polling interval of the flow is set to 20 seconds."
+										},										                                        
+										{
+										 "details":"In the Flow Exerciser toolbar, click the View Path icon <img src='http://ot4i.github.io/iib-tutorials/images/icons/iib/viewPath.png' alt='View path' /> to highlight the message path through the message flow. You should now see a second path highlighted in the flow (FileExists > Update Cache? > File Read > Update Cache > CacheUpdated) demonstrating the actions of the FileExists node. The flow will have noticed that the in-memory cache had not previously been populated and will have used the content of the file you copied to populate the cache. The Trace node at the end of the flow named CacheUpdated should have created an entry in the trace file (file location discussed earlier in the Prepare section of this tutorial) with content similar to the following:<br><code>===== Trace at 2022-03-25 10:49:27.628266 =====<br>File Name = 'CountryCodes.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>Cache LastModified = GMTTIMESTAMP '2022-03-25 10:49:27.621446'<br>The flow has updated its cache, either because it has not previously been initialised, or because the FileExists node was triggered by a file whose LastModified timestamp was more recent than the time of the last cache update.<br></code>"
+										},
+										{
+                                            "details": "Now that the cache has been populated we will re-test the bottom branch of the flow by clicking the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. Using the same saved message, named Input1, we will repeat the earlier test but this time you should see a different reply message..."
+										},	
+										{
+                                            "details": "The input message <span class='resource'>Input1</span> contains this data:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\"<br>}</code><br><br>Select this input message and click Send and your message is sent to the HTTPInput node. You will receive a JSON reply message structured like this (but with a different timestamp):<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryName\": \"United Kingdom\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CacheInfo\": \"Cache was last updated at GMTTIMESTAMP '2022-03-25 09:48:41.183447'\"<br>}</code><br><br>After you close the dialog, the path taken through the messageflow will be highlighted."
+										},
+										{
+                                            "details": "You can now run a further test, demonstrating the last branch of the message flow. Repeat the copy of the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. This time, the cache won't need initialising and will have already been updated more recently than the Last Modified timestamp of the file, so after the flow propagates to the trace node named CacheNotUpdated, the last action of the flow will be to delete the file. If you check back in the trace file, you should see a slightly different trace message has been appended by the node CacheNotUpdated:<br><code>===== Trace at 2022-03-25 10:59:07.912014 =====<br>File Name = 'CountryCodes_NEW.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>There is nothing further for the flow to do at this time, because the FileExists node was triggered by a file whose LastModified timestamp was earlier than the latest cache update time.<br></code>"
+										},
+										{
+										 "details": "If you make an edit to the CountryCodes.txt file (for example, add a new country to the list) and resave the file so that it has been recently modified (after the last update to the cache), then you should be able to copy it to the input directory for the FileExists node and the flow will update its cache again."
+										}										
+                                        ]
+                                    }
+                            }
+
+                    ]
+                },
+                "helpLinks": 
+				{
+                    "title": "Find out more",
+                    "details": 
+					[
+                        {
+                            "title": "IBM Documentation link to ",
+                            "description": "FileExists node",
+                            "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=nodes-fileexists-node",
+							"type": "web"
+                        },
+                        {
+                            "title": "IBM Documentation link to ",
+                            "description": "Testing your message flow by using the Flow exerciser",
+                            "link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/rt26110_.htm",
+							"type": "web"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
