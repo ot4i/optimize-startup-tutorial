@@ -168,14 +168,17 @@
                           "details":
                           [
                             {
-                                "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values. It is important to select the default options for this wizard, because when the server is created it will include the assignment of a JVM Debug Port. Later on, when we execute the first stage of server optimization, this will cause the ibmint command to require the JVM to remain a switched on part of the server's behaviour. In sunsequent optimization steps we will then switch this off, as the message flow we are using does not actually require Java.  Click Finish on the dialog and the local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog."
-                            }
+                                "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values."
+                            },
+							{
+                            "details": "<b>It is important to select the default options for this wizard</b>, because when the server is created it will include the assignment of a JVM Debug Port. Later on, when we execute the first stage of server optimization, this will cause the ibmint command to require the JVM to remain a switched on part of the server's behaviour. In sunsequent optimization steps we will then switch this off, as the message flow we are using does not actually require Java.  Click Finish on the dialog and the local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog."
+                    		},	
+							{
+                            "details": "Next you will use the Flow exerciser to send HTTP requests to the message flow."
+                    		}		
 						  ]
 						}
-					},	
-					{
-                            "section": "Next you will use the Flow exerciser to send HTTP requests to the message flow."
-                    }
+					}
              ]
                 },
                 "helpLinks": 
