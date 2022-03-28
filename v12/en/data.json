@@ -71,8 +71,7 @@
                 "sections": 
 				[
                     {
-                        "section": "This tutorial demonstrates how the ibmint command can be used to optimize the startup time for an independent integration server. The purpose of optimization is to speed up server startup in cloud container environments. The techniques discussed only apply to independent integration servers and are not suitable for integration servers that are managed by an integration node. Server optimization is suitable when the server content is fixed and it is desireable to reduce the startup time of the process to be as short as possible. The tutorial provides a simple example message flow which will be deployed and tested using a local independent integration server created in the Toolkit. The tutorial then switches to a Command Console where several ibmint commands server will be used to demonstrate the process of optimizing startup.<ul><li>The first optimization stage demonstrates how the server itself can decide which components are unecessary (based upon the server's configuration and deployed content)</li></ul>"
-						
+                        "section": "This tutorial demonstrates how the ibmint command can be used to optimize the startup time for an independent integration server. The purpose of optimization is to speed up server startup in cloud container environments. The techniques discussed only apply to independent integration servers and are not suitable for integration servers that are managed by an integration node. Server optimization is suitable when the server content is fixed and it is desireable to reduce the startup time of the process to be as short as possible. The tutorial provides a simple example message flow which will be deployed and tested using a local independent integration server created in the Toolkit. The tutorial then switches to a Command Console where several ibmint commands server will be used to demonstrate the process of optimizing startup. The tutorial deliberately breaks down the optimization task into several separate stages, in order to better identify and explain some of the most frequently used options. The first optimization stage demonstrates how the server itself can decide which components are unnecessary (based upon the server's configuration and deployed content). The second optimization stage goes a step further and demonstrates the impact of not starting a JVM within the server process. The third and final optimization stage turns off the server's use of NodeJS."
 					}
                 ]
             },			
@@ -84,8 +83,8 @@
 				[
 					{
 						"title": "IBM Documentation link to ",
-						"description": "Developing integration solutions from scratch",
-						"link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/bi12002_.htm",
+						"description": "Optimizing the startup time for an independent integration server",
+                        "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=solutions-optimizing-startup-time-independent-integration-server",
 						"type": "web"
 					}
 				]
@@ -103,40 +102,22 @@
                     "sections": 
 					[
                         {
-                            "section": "When you click Import, one project will be created in your workspace: An application named <span class='application'>ApplicationFileExists</span>"
+                            "section": "When you click Import, one project will be created in your workspace: An application named <span class='application'>ExampleApplication</span>"
                         },
                         {
-                            "section": "<span class='application'>ApplicationFileExists</span> provides a single message flow named <span class='application'>FlowFileExists</span> which uses a FileExists node to poll a directory and triggers the message flow when it notices that a file has arrived. The file itself is not parsed, but information about the file is propagated through the flow. Downstream nodes use the time when the file was last modified to determine whether or not to update an in-memory cache. The following descriptions summarize the functionality of each message flow node:"							
+                            "section": "<span class='application'>ExampleApplication</span> provides a single message flow named <span class='application'>ExampleFlow</span> which us driven by an HTTP input, converts a JSON format message into an XML format message using a Compute node, and sends the data back to the requesting HTTP client. The main purpose of the tutorial is not centered around the development or function of the flow, but rather the process of optimizing an independent integration server which has had the message flow deployed."							
                         },
 						{ 
-                        	"section":"<span class='uicontrol'>HTTP Input</span>: An Input node that receives an input message across HTTP that contains a country code (an abbreviated country name)."
+                        	"section":"<span class='uicontrol'>HTTP Input</span>: An Input node that receives an input message across HTTP in JSON format."
                         },
                         { 
-                        	"section":"<span class='uicontrol'>TranslateCountryCode</span>: A Compute node that uses an ESQL shared variable as an in-memory cache providing a Lookup facility to retrieve the full country name, by using the abbreviated country code as a key."
+                        	"section":"<span class='uicontrol'>Compute</span>: A Compute node that converts the JSON data into the XMLNSC domain, and reformats the data fields to be uppercase."
                         },
 						{ 
-                        	"section":"<span class='uicontrol'>HTTP Reply</span>: A Reply node that returns a message across HTTP that contains the full country name, and to help you understand how the flow is operating, the time at which the cache was last updated."
-                        },
-                        { 
-                        	"section":"<span class='uicontrol'>FilExists</span>: A FileExists node that triggers the flow when it notices that a file has been written to a directory which it is polling on a 20 second interval."
-                        },
-                        { 
-                        	"section":"<span class='uicontrol'>Update Cache?</span>: A Filter node that compares the time when the file was last modified to the time when the in-memory cache was last updated, and depending on the comparison, routes the data in different directions."
-                        },
-						{ 
-                        	"section":"<span class='uicontrol'>CacheNotUpdated</span>: A Trace node that records the fact that the cache does not need updating in a trace file."
-                        },
-						{ 
-                        	"section":"<span class='uicontrol'>File Read</span>: A File Read node that reads the file and parses it using a DFDL message model, ready to populate the in-memory cache."
-                        },
-						{ 
-                        	"section":"<span class='uicontrol'>Update Cache</span>: A Compute node that updates the shared variable in-memory cache with the content from the file."
-                        },
-						{ 
-                        	"section":"<span class='uicontrol'>CacheUpdated</span>: A Trace node that records the fact that the cache has been updated in a trace file"
+                        	"section":"<span class='uicontrol'>HTTP Reply</span>: A Reply node that returns the XML message across HTTP."
                         },
                         {
-			    			"section": "Once imported using the link on the right, the provided project is ready to be deployed and tested. The rest of these instructions will describe how to do this using the Toolkit's built-in Flow Exerciser."
+			    			"section": "Once imported using the link on the right, the provided project is ready to be deployed and testedusing the Toolkit's built-in Flow Exerciser. Once tested, the server will be optimized and we will observe the impact on the process startup time."
 						}
                     ]
                 },
@@ -152,18 +133,11 @@
 							"type": "web"
                         },
 						{
-                            "title": "IBM Documentation link to ",
-                            "description": "FileExists node",
-                            "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=nodes-fileexists-node",
-							"type": "web"
-                        },
-                        {
-                             "title": "IBM Documentation link to ",
-                             "description": "Long-lived variable",
-                             "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=overview-long-lived-variables",
-                             "type": "web"
-                        }
-						
+						"title": "IBM Documentation link to ",
+						"description": "Optimizing the startup time for an independent integration server",
+                        "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=solutions-optimizing-startup-time-independent-integration-server",
+						"type": "web"
+						}                        
                     ]
                 },
                 "actions": 
@@ -194,37 +168,8 @@
                           "details":
                           [
                             {
-                                "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values and click Finish. The local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog. "
+                                "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values. It is important to select the default options for this wizard, because when the server is created it will include the assignment of a JVM Debug Port. Later on, when we execute the first stage of server optimization, this will cause the ibmint command to require the JVM to remain a switched on part of the server's behaviour. In sunsequent optimization steps we will then switch this off, as the message flow we are using does not actually require Java.  Click Finish on the dialog and the local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog."
                             }
-						  ]
-						}
-					},
-					{
-                       "section":"<b>Create a temporary directory and configure the message flow's trace nodes</b>",
-						  "steps":
-                        {
-                          "type": "ordered",
-                          "details":
-                          [
-                             {
-                                 "details": "The message flow includes two trace nodes (named CacheUpdated and CacheNotUpdated) which are both currently configured to write a trace file named <code>C:\\temp\\TraceFileExists.txt</code>. Make sure this temporary directory exists, or update the message flow nodes' properties to point to a different file location."
-                                             }
-						  ]
-						}
-					},
-					{
-                       "section":"<b>Create the directory which the FileExists node will poll</b>",
-						  "steps":
-                        {
-                          "type": "ordered",
-                          "details":
-                          [
-                             {
-                                 "details": "On Windows: Create the directory <code>C:\\temp\\FileExistsDemo</code>."
-                                             },
-                                             {
-                                 "details": "On Linux: Create a suitable directory such as <code>/tmp/FileExistsDemo</code> and change the Input directory property of the FileExists node accordingly to point to the same directory."
-                                             }
 						  ]
 						}
 					},	
