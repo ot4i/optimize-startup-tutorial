@@ -209,26 +209,51 @@
 										},
 										{										
 										  "details": "Copy the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. The file will be processed by the message flow to update its cache and will then be deleted. This may take a few seconds as the polling interval of the flow is set to 20 seconds."
-										},										                                        
+										}									
+                                        ]
+                                    }
+                            },
+							{
+                                "section": "<h4>Open a Command Console",
+                                "steps": {
+                                    "type": "ordered",
+                                    "details": [                                      
+                                    	{
+                                        "details": "A command ibmint package"
+                                        },
 										{
-										 "details":"In the Flow Exerciser toolbar, click the View Path icon <img src='http://ot4i.github.io/iib-tutorials/images/icons/iib/viewPath.png' alt='View path' /> to highlight the message path through the message flow. You should now see a second path highlighted in the flow (FileExists > Update Cache? > File Read > Update Cache > CacheUpdated) demonstrating the actions of the FileExists node. The flow will have noticed that the in-memory cache had not previously been populated and will have used the content of the file you copied to populate the cache. The Trace node at the end of the flow named CacheUpdated should have created an entry in the trace file (file location discussed earlier in the Prepare section of this tutorial) with content similar to the following:<br><code>===== Trace at 2022-03-25 10:49:27.628266 =====<br>File Name = 'CountryCodes.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>Cache LastModified = GMTTIMESTAMP '2022-03-25 10:49:27.621446'<br>The flow has updated its cache, either because it has not previously been initialised, or because the FileExists node was triggered by a file whose LastModified timestamp was more recent than the time of the last cache update.<br></code>"
-										},
+                                            "details": "Another command. ibmint deploy"
+                                        },																				
+                                        {
+                                            "details": "Another command. ibmint stop server"
+                                        },
 										{
-                                            "details": "Now that the cache has been populated we will re-test the bottom branch of the flow by clicking the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. Using the same saved message, named Input1, we will repeat the earlier test but this time you should see a different reply message..."
-										},	
+                                            "details": "Another command. ibmint optimize"
+                                        },
 										{
-                                            "details": "The input message <span class='resource'>Input1</span> contains this data:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\"<br>}</code><br><br>Select this input message and click Send and your message is sent to the HTTPInput node. You will receive a JSON reply message structured like this (but with a different timestamp):<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryName\": \"United Kingdom\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CacheInfo\": \"Cache was last updated at GMTTIMESTAMP '2022-03-25 09:48:41.183447'\"<br>}</code><br><br>After you close the dialog, the path taken through the messageflow will be highlighted."
-										},
+                                            "details": "Another command. Deal with the JVM debug port, ibmint optimize, ibmint start server"
+                                        },
 										{
-                                            "details": "You can now run a further test, demonstrating the last branch of the message flow. Repeat the copy of the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. This time, the cache won't need initialising and will have already been updated more recently than the Last Modified timestamp of the file, so after the flow propagates to the trace node named CacheNotUpdated, the last action of the flow will be to delete the file. If you check back in the trace file, you should see a slightly different trace message has been appended by the node CacheNotUpdated:<br><code>===== Trace at 2022-03-25 10:59:07.912014 =====<br>File Name = 'CountryCodes_NEW.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>There is nothing further for the flow to do at this time, because the FileExists node was triggered by a file whose LastModified timestamp was earlier than the latest cache update time.<br></code>"
-										},
-										{
-										 "details": "If you make an edit to the CountryCodes.txt file (for example, add a new country to the list) and resave the file so that it has been recently modified (after the last update to the cache), then you should be able to copy it to the input directory for the FileExists node and the flow will update its cache again."
+                                            "details": "Edit the server.components.yaml and turn off NodeJS ibmint start server"
 										}										
                                         ]
                                     }
+                            },
+							{
+                                "section": "<h4>Go back to the Toolkit",
+                                "steps": {
+                                    "type": "ordered",
+                                    "details": [                                      
+                                    	{
+                                        "details": "try to redeploy and find that you cant"
+                                        },
+										{
+                                            "details": " try opening web ui and find that you cant"
+                                        }
+										
+                                        ]
+                                    }
                             }
-
                     ]
                 },
                 "helpLinks": 
